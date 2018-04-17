@@ -164,12 +164,8 @@ class ReactTags extends React.Component {
     const TagComponent = this.props.tagComponent || Tag
 
     const tags = this.props.tags.map((tag, i) => (
-      <TagComponent
-        key={i}
-        tag={tag}
-        classNames={this.state.classNames}
-        onDelete={this.deleteTag.bind(this, i)}
-      />
+      React.createElement( TagComponent, {
+        key: i, tag: tag, classNames: this.state.classNames, onDelete: this.deleteTag.bind(this, i) })
     ))
 
     const expandable =
@@ -179,49 +175,24 @@ class ReactTags extends React.Component {
     this.state.focused && classNames.push(this.state.classNames.rootFocused)
 
     return (
-      <div
-        className={classNames.join(" ")}
-        onClick={this.handleClick.bind(this)}
-      >
-        <div
-          className={this.state.classNames.selected}
-          aria-live="polite"
-          aria-relevant="additions removals"
-        >
-          {tags}
-        </div>
-        <div
-          className={this.state.classNames.search}
-          onBlurCapture={this.handleBlur.bind(this)}
-          onFocusCapture={this.handleFocus.bind(this)}
-          onInput={this.handleInput.bind(this)}
-          onKeyDown={this.handleKeyDown.bind(this)}
-        >
-          <Input
-            {...this.state}
-            ref={c => {
+      React.createElement( 'div', {
+        className: classNames.join(" "), onClick: this.handleClick.bind(this) },
+        React.createElement( 'div', {
+          className: this.state.classNames.selected, 'aria-live': "polite", 'aria-relevant': "additions removals" },
+          tags
+        ),
+        React.createElement( 'div', {
+          className: this.state.classNames.search, onBlurCapture: this.handleBlur.bind(this), onFocusCapture: this.handleFocus.bind(this), onInput: this.handleInput.bind(this), onKeyDown: this.handleKeyDown.bind(this) },
+          React.createElement( Input, Object.assign({},
+            this.state, { ref: c => {
               this.input = c
-            }}
-            listboxId={listboxId}
-            autofocus={this.props.autofocus}
-            autoresize={this.props.autoresize}
-            expandable={expandable}
-            placeholder={this.props.placeholder}
-          />
-          <Suggestions
-            {...this.state}
-            ref={c => {
+            }, listboxId: listboxId, autofocus: this.props.autofocus, autoresize: this.props.autoresize, expandable: expandable, placeholder: this.props.placeholder })),
+          React.createElement( Suggestions, Object.assign({},
+            this.state, { ref: c => {
               this.suggestions = c
-            }}
-            listboxId={listboxId}
-            expandable={expandable}
-            suggestions={this.props.suggestions}
-            addTag={this.addTag.bind(this)}
-            maxSuggestionsLength={this.props.maxSuggestionsLength}
-            customRegex={this.props.customRegex}
-          />
-        </div>
-      </div>
+            }, listboxId: listboxId, expandable: expandable, suggestions: this.props.suggestions, addTag: this.addTag.bind(this), maxSuggestionsLength: this.props.maxSuggestionsLength, customRegex: this.props.customRegex }))
+        )
+      )
     )
   }
 }

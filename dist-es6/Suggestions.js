@@ -71,25 +71,19 @@ class Suggestions extends React.Component {
       }
 
       return (
-        <li
-          id={key}
-          key={key}
-          role="option"
-          className={classNames.join(" ")}
-          aria-disabled={item.disabled === true}
-          onMouseDown={this.handleMouseDown.bind(this, item)}
-        >
-          <span dangerouslySetInnerHTML={markIt(item.name, this.props.query)} />
-        </li>
+        React.createElement( 'li', {
+          id: key, key: key, role: "option", className: classNames.join(" "), 'aria-disabled': item.disabled === true, onMouseDown: this.handleMouseDown.bind(this, item) },
+          React.createElement( 'span', { dangerouslySetInnerHTML: markIt(item.name, this.props.query) })
+        )
       )
     })
 
     return (
-      <div className={this.props.classNames.suggestions}>
-        <ul role="listbox" id={this.props.listboxId}>
-          {options}
-        </ul>
-      </div>
+      React.createElement( 'div', { className: this.props.classNames.suggestions },
+        React.createElement( 'ul', { role: "listbox", id: this.props.listboxId },
+          options
+        )
+      )
     )
   }
 }
